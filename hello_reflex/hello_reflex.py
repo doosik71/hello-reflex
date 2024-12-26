@@ -1,24 +1,17 @@
 import reflex as rx
 
 
-class LoginState(rx.State):
-    logged_in: bool = False
+class State(rx.State):
+    items: list[str] = ["Apple", "Banana", "Cherry"]
 
-    @rx.event
-    def toggle_login(self):
-        self.logged_in = not self.logged_in
+
+def render_item(item: rx.Var[str]):
+    return rx.list.item(item)
 
 
 def index():
     return rx.box(
-        rx.cond(
-            LoginState.logged_in,
-            rx.heading("Logged In"),
-            rx.heading("Not Logged In"),
-        ),
-        rx.button(
-            "Toggle Login", on_click=LoginState.toggle_login
-        ),
+        rx.foreach(State.items, render_item),
     )
 
 
