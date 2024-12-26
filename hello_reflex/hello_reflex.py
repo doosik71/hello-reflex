@@ -1,24 +1,23 @@
 import reflex as rx
 
 
-class CounterState(rx.State):
-    count: int = 0
+class LoginState(rx.State):
+    logged_in: bool = False
 
     @rx.event
-    def increment(self, amount: int):
-        self.count += amount
+    def toggle_login(self):
+        self.logged_in = not self.logged_in
 
 
-def index() -> rx.Component:
-    return rx.hstack(
-        rx.heading(CounterState.count),
-        rx.button(
-            "Increment by 1",
-            on_click=lambda: CounterState.increment(1),
+def index():
+    return rx.box(
+        rx.cond(
+            LoginState.logged_in,
+            rx.heading("Logged In"),
+            rx.heading("Not Logged In"),
         ),
         rx.button(
-            "Increment by 5",
-            on_click=lambda: CounterState.increment(5),
+            "Toggle Login", on_click=LoginState.toggle_login
         ),
     )
 
