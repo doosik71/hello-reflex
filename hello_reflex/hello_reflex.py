@@ -5,15 +5,20 @@ class CounterState(rx.State):
     count: int = 0
 
     @rx.event
-    def increment(self):
-        self.count += 1
+    def increment(self, amount: int):
+        self.count += amount
 
 
 def index() -> rx.Component:
     return rx.hstack(
         rx.heading(CounterState.count),
         rx.button(
-            "Increment", on_click=CounterState.increment
+            "Increment by 1",
+            on_click=lambda: CounterState.increment(1),
+        ),
+        rx.button(
+            "Increment by 5",
+            on_click=lambda: CounterState.increment(5),
         ),
     )
 
