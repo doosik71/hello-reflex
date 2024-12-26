@@ -2,16 +2,24 @@ import reflex as rx
 
 
 class State(rx.State):
-    items: list[str] = ["Apple", "Banana", "Cherry"]
+    count: int = 0
 
-
-def render_item(item: rx.Var[str]):
-    return rx.list.item(item)
+    @rx.event
+    def increment(self):
+        self.count += 1
 
 
 def index():
     return rx.box(
-        rx.foreach(State.items, render_item),
+        rx.heading("Count: "),
+        rx.cond(
+            State.count % 2 == 0,
+            rx.text("Even"),
+            rx.text("Odd"),
+        ),
+        rx.button(
+            "Increment", on_click=State.increment
+        ),
     )
 
 
